@@ -7,12 +7,14 @@ Vector Quantized Variational Autoencoder. Pytorch implementation of the paper ["
   - [x] VAE
     - [x] Encoder
     - [x] Decoder
-  - [ ] Quantizer
+  - [x] Quantizer
 - [ ] Dataloader
   - [ ] Image Loaders
+  - [ ] Padding
   - [ ] Normalizer
   - [ ] Batcher
 - [ ] Training
   - [x] ELBO loss
+  - [x] VQ Loss
   - [x] Train function
 - [ ] Sampler

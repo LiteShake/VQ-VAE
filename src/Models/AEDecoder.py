@@ -29,6 +29,7 @@ class AEDecoder(nn.Module):
 
         self.upsample = Upsample()    # 4
         self.relu = nn.ReLU()
+        self.sigmoid = nn.Sigmoid()
 
     def forward(self, input) :
 
@@ -57,6 +58,6 @@ class AEDecoder(nn.Module):
         out = self.upsample(out)
 
         out = self.mha6(out, out, out)[1]
-        out = self.relu(self.r6(out))
+        out = self.sigmoid(self.r6(out))
 
         return out

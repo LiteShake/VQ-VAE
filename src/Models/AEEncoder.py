@@ -47,7 +47,7 @@ class AEEncoder(nn.Module):
 
         return out
 
-"""
+
 tsr = torch.randn(3, 512, 512)
 
 print(tsr.shape)
@@ -59,4 +59,4 @@ print(model)
 res = model(tsr)
 
 print(f"final {res.shape}")
-"""
+
