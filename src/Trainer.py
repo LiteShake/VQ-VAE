@@ -1,7 +1,7 @@
 
 import torch
 import torch.nn as nn
-from Losses.VAELoss import VAELoss
+from Losses.VQVAELoss import VAELoss
 
 class Trainer :
 
@@ -12,31 +12,44 @@ class Trainer :
         self.model = model
         self.data = data
 
-    def train(self, device, hypers):
+    def train(self, device):
 
-        optimizer = torch.optim.AdamW(hypers["LEARNRATE"])
+        optimizer = torch.optim.AdamW(self.model.parameters())
+        criterion = VAELoss()
+        loader = self.data
 
-        for batch in self.data:
+        # loop over the dataset multiple times
+        for _, data in enumerate(loader, 0):
 
-            # loop over the dataset multiple times
-            for epoch in range( hypers['EPOCHS'] ):
-                running_loss = 0.0
-                for image in batch :
-                    img, recon = image, image
+            print(f"{len(data[0])} BATCHES")
+            print(data[0][1])
 
-                    img, recon = img.to(device), recon.to(device)
+            for batch in range(len(self.data)):
 
-                    # zero the parameter gradients
-                    optimizer.zero_grad()
+                for epoch in range(5):
 
-                    # forward + backward + optimize
-                    outputs = self.model(img)
-                    loss = VAELoss(img, recon, mean, logvar)
-                    loss.backward()
-                    optimizer.step()
+                    print(type(data))
+                    print(f"{len(data)} SAMPLES")
+                    for sample in self.data[batch]:
 
-                    running_loss += loss.item()
+
+                        running_loss = 0.0
+                        inputs, labels = sample, sample
+                        print(sample.shape)
+                        inputs, labels = inputs.to(device), labels.to(device)
+
+                        # zero the parameter gradients
+                        optimizer.zero_grad()
+
+                        # forward + backward + optimize
+                        outputs = self.model(inputs)
+                        loss = criterion(outputs, labels)["loss"]
+                        loss.backward()
+                        optimizer.step()
+
+                        running_loss += loss.item()
 
                 print('Loss: {}'.format(running_loss))
+                torch.save(self.model.state_dict(), f"./Saves/Hikari_M01_V512_B{batch}.pt")
 
-            print('Finished Training')
+        print('Finished Training')

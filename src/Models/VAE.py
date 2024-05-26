@@ -2,9 +2,9 @@
 import torch
 import torch.nn as nn
 
-from AEDecoder import*
-from AEEncoder import*
-from VAEBottleneck import*
+from Models.AEDecoder import*
+from Models.AEEncoder import*
+from Models.VAEBottleneck import*
 
 class VAE(nn.Module):
 
@@ -24,6 +24,7 @@ class VAE(nn.Module):
 
         return mean, logvar, out
 
+"""
 tsr = torch.randn(3, 512, 512)
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
@@ -39,3 +40,4 @@ res = model(tsr)
 print(f"mean {res[0].shape}")
 print(f"logv {res[1].shape}")
 print(f"outs {res[2].shape}")
+"""

@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from Components.ResConnector import ResConnector
+from Models.Components.ResConnector import ResConnector
 
 class ResNet(nn.Module):
     # see https://pytorch.org/docs/0.4.0/_modules/torchvision/models/resnet.html

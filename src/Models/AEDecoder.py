@@ -2,9 +2,9 @@
 import torch
 import torch.nn as nn
 
-from Components.ResNetBlock import *
-from Components.Attention import *
-from Components.Sample import *
+from Models.Components.ResNetBlock import *
+from Models.Components.Attention import *
+from Models.Components.Sample import *
 
 import torch.nn.functional as F
 

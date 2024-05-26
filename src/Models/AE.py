@@ -2,8 +2,8 @@
 import torch
 import torch.nn as nn
 
-from AEDecoder import*
-from AEEncoder import*
+from Models.AEDecoder import *
+from Models.AEEncoder import *
 
 class AE(nn.Module):
 

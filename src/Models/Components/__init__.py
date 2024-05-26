@@ -1,4 +1,4 @@
-from Components.Attention import *
-from Components.ResConnector import*
-from Components.ResNetBlock import *
-from Components.Sample import *
+from Models.Components.Attention import *
+from Models.Components.ResConnector import*
+from Models.Components.ResNetBlock import *
+from Models.Components.Sample import *

@@ -2,10 +2,10 @@
 import torch
 import torch.nn as nn
 
-from AEDecoder import*
-from AEEncoder import*
-from VAEBottleneck import*
-from VAEQuantizer import *
+from Models.AEDecoder import*
+from Models.AEEncoder import*
+from Models.VAEBottleneck import*
+from Models.VAEQuantizer import *
 
 class VQVAE(nn.Module):
 
@@ -13,7 +13,7 @@ class VQVAE(nn.Module):
         super().__init__()
 
         self.enc = AEEncoder().to(device)
-        self.bnk = VectorQuantizer(1024, 32)
+        self.bnk = VectorQuantizer(1024, 32).to(device)
         self.dec = AEDecoder().to(device)
 
     def forward(self, x):
@@ -25,6 +25,7 @@ class VQVAE(nn.Module):
 
         return out, vqloss
 
+"""
 tsr = torch.randn(3, 512, 512)
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
@@ -39,3 +40,4 @@ res = model(tsr)
 
 print(f"mean {res[0].shape}")
 print(f"vqloss {res[1]}")
+"""

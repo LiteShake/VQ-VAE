@@ -2,9 +2,9 @@
 import torch
 import torch.nn as nn
 
-from Components.ResNetBlock import *
-from Components.Attention import *
-from Components.Sample import *
+from Models.Components.ResNetBlock import *
+from Models.Components.Attention import *
+from Models.Components.Sample import *
 
 import torch.nn.functional as F
 
@@ -48,6 +48,7 @@ class AEEncoder(nn.Module):
         return out
 
 
+"""
 tsr = torch.randn(3, 512, 512)
 
 print(tsr.shape)
@@ -59,4 +60,4 @@ print(model)
 res = model(tsr)
 
 print(f"final {res.shape}")
-
+"""
