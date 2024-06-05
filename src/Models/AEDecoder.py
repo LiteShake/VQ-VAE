@@ -35,13 +35,13 @@ class AEDecoder(nn.Module):
 
         out = self.mha1(input, input, input)[1]
         out = self.relu(self.r1(out))
-        print(out.shape)
+        #print(out.shape)
         out = self.upsample(out)
         # print(f"upsample {out.shape}")
 
         out = self.mha2(input, input, input)[1]
         out = self.relu(self.r2(out))
-        print(out.shape)
+        #print(out.shape)
         out = self.upsample(out)
         # print(f"upsample {out.shape}")
 

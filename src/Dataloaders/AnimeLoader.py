@@ -3,10 +3,10 @@ import torch
 import torchvision
 import torchvision.transforms as T
 import os
+from PIL import Image
 import matplotlib.pyplot as plt
 
 from torch.utils.data import DataLoader
-from torchvision.datasets import ImageFolder
 from torchvision.utils import make_grid
 
 class AnimeLoader:
@@ -14,30 +14,34 @@ class AnimeLoader:
     def __init__(self) -> None:
 
         #self.address = "./Data/Anime"               # TESTING ADDRESS
-        self.address = "./src/Dataloaders/Data/Anime/"   # RUN ADDRESS
+        self.address = "./src/Dataloaders/Data/Anime/images/"   # RUN ADDRESS
 
     def Load(self):
 
         IMAGE_SZ = 512
-        BATCH_SZ = 128
+
+        files = os.listdir(self.address)
+        print(self.address + files[0])
+        samples = [torchvision.io.read_image(self.address + i) for i in files ]
 
         stats = (.5, .5, .5), (.5, .5, .5)
 
-        train = ImageFolder(
-            self.address,
-            transform= T.Compose([
-                T.Resize(IMAGE_SZ),
-                T.CenterCrop(IMAGE_SZ),
-                T.ToTensor(),
-                T.Normalize(*stats)
-            ])
-        )
+        transforms = T.Compose([
+            T.ToPILImage(),
+            T.Resize(IMAGE_SZ),
+            T.CenterCrop(IMAGE_SZ),
+            T.ToTensor(),
+            T.Normalize(*stats)
+        ])
 
-        train_dl = DataLoader(train, BATCH_SZ, shuffle=True, num_workers=1, pin_memory=True)
+        print(samples[0])
+        print(samples[0].shape)
+        samples = [transforms(i) for i in samples]
+        print(f"Loaded {samples} samples")
 
-        return train_dl
+        return samples
 
-#"""
+"""
 def main():
     stats = (.5, .5, .5), (.5, .5, .5)
     def denorm(img_tensors):
