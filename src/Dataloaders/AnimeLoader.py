@@ -22,26 +22,48 @@ class AnimeLoader:
 
         files = os.listdir(self.address)
         print(self.address + files[0])
-        samples = [torchvision.io.read_image(self.address + i) for i in files ]
+        samples = [torchvision.io.read_image(self.address + i) for i in files[:5_120] ]
 
         stats = (.5, .5, .5), (.5, .5, .5)
 
         transforms = T.Compose([
             T.ToPILImage(),
-            T.CenterCrop(IMAGE_SZ),
+            #T.CenterCrop(IMAGE_SZ),
             T.Resize(IMAGE_SZ),
             T.ToTensor(),
             T.Normalize(*stats)
         ])
 
+        samples = [transforms(i) for i in samples]
+        for i in samples :
+            if(i.shape != (3, 512, 512)) : print('false')
         print(samples[0])
         print(samples[0].shape)
-        samples = [transforms(i) for i in samples]
-        print(f"Loaded {samples} samples")
+        print(f"Loaded {len(samples)} samples")
 
-        return samples
+        batches = []
 
-#"""
+        count = 0
+        samplecount = 0
+        batchcount = 0
+        batch = []
+
+        for sample in samples:
+            batch.append(sample)
+            count += 1
+            samplecount += 1
+
+            if(count == 16):
+                batches.append(batch)
+                batchcount += 1
+                count = 0
+                batch = []
+
+        print(f"LOADED \n{samplecount} SAMPLES \n{batchcount} BATCHES")
+
+        return batches
+
+"""
 def main():
     stats = (.5, .5, .5), (.5, .5, .5)
     loader = AnimeLoader()
