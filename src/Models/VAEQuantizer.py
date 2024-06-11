@@ -3,13 +3,15 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+#"""
 class VectorQuantizer(nn.Module):
+
     def __init__(self, num_embeddings, embedding_dim, commitment_cost = 0.25):
         super().__init__()
         self.commitment_cost = commitment_cost
         self.num_embeddings = num_embeddings
         self.embedding = nn.Embedding(num_embeddings, embedding_dim)
-        self.reset_parameters()
+        # self.reset_parameters()
 
     def forward(self, latents):
         # Compute L2 distances between latents and embedding weights
@@ -24,7 +26,7 @@ class VectorQuantizer(nn.Module):
 
         # Make the gradient with respect to latents be equal to the gradient with respect to quantized latents
         quantized_latents = latents + (quantized_latents - latents).detach()
-        return quantized_latents, vq_loss
+        return vq_loss, quantized_latents
 
     def quantize(self, encoding_indices):
         z = self.embedding(encoding_indices)
@@ -33,3 +35,5 @@ class VectorQuantizer(nn.Module):
 
     def reset_parameters(self):
         nn.init.uniform_(self.embedding.weight, -1 / self.num_embeddings, 1 / self.num_embeddings)
+
+#"""

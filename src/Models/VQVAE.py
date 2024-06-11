@@ -13,17 +13,17 @@ class VQVAE(nn.Module):
         super().__init__()
 
         self.enc = AEEncoder().to(device)
-        self.bnk = VectorQuantizer(1024, 32).to(device)
+        self.bnk = VectorQuantizer(1024, 32, .25).to(device)
         self.dec = AEDecoder().to(device)
 
     def forward(self, x):
 
         out = self.enc(x)
-        out, vqloss = self.bnk(out)
+        loss, quantized = self.bnk(out)
         # print(out.shape)
-        out = self.dec(out)
+        out = self.dec(quantized)
 
-        return out, vqloss
+        return out, loss
 
 """
 tsr = torch.randn(3, 512, 512)

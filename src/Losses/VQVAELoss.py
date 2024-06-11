@@ -7,9 +7,9 @@ class VAELoss(nn.Module):
         self.λ = λ
         self.reconstruction_loss = nn.MSELoss()
 
-    def forward(self, outputs, target):
-        output, vq_loss = outputs
-        reconst_loss = self.reconstruction_loss(output, target)
-
+    def forward(self, outputs, vq_loss, target):
+        reconst_loss = self.reconstruction_loss(outputs, target)
+        #print(reconst_loss)
         loss = reconst_loss + self.λ * vq_loss
-        return {"loss": loss, "reconstruction loss": reconst_loss, "VQ loss": vq_loss}
+
+        return loss

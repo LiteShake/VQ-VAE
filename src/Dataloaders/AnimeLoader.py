@@ -14,7 +14,7 @@ class AnimeLoader:
     def __init__(self) -> None:
 
         #self.address = "./Data/Anime"               # TESTING ADDRESS
-        self.address = "./src/Dataloaders/Data/Anime/images/"   # RUN ADDRESS
+        self.address = "./Dataloaders/Data/Anime/images/"   # RUN ADDRESS
 
     def Load(self):
 
@@ -22,7 +22,7 @@ class AnimeLoader:
 
         files = os.listdir(self.address)
         print(self.address + files[0])
-        samples = [torchvision.io.read_image(self.address + i) for i in files[:5_120] ]
+        samples = [torchvision.io.read_image(self.address + i) for i in files[:1_280] ]
 
         stats = (.5, .5, .5), (.5, .5, .5)
 

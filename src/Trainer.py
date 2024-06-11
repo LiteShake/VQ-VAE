@@ -3,66 +3,80 @@ import torch
 import torch.nn as nn
 from Losses.VQVAELoss import VAELoss
 
+"""
+# loop over the dataset multiple times
+for epoch in range(5):
+    running_loss = 0.0
+    for i, data in enumerate(trainloader, 0):
+        inputs, labels = data
+        inputs, labels = inputs.to(device), labels.to(device)
+
+        # zero the parameter gradients
+        optimizer.zero_grad()
+
+        # forward + backward + optimize
+        outputs = net(inputs)
+        loss = criterion(outputs, labels)
+        loss.backward()
+        optimizer.step()
+
+        running_loss += loss.item()
+
+    print('Loss: {}'.format(running_loss)
+
+print('Finished Training')
+"""
+
 class Trainer :
 
     def __init__(self) -> None:
         pass
 
-    def Attach(self, model, data) :
-        self.model = model
+    def Attach(self, data) :
         self.data = data
 
-    def train(self, device):
+    def train(self, model, device):
 
-        optimizer = torch.optim.AdamW(self.model.parameters())
+        optimizer = torch.optim.AdamW(model.parameters())
         criterion = VAELoss()
-        loader = self.data
 
         # loop over the dataset multiple times
-        for _, data in enumerate(loader, 0):
 
-            print(f"{len(data)} {len(data[0])} {data[0][0].shape}")
-            #data = data[0]
+        skippedsamples = 0
+        for batch in range(len(self.data)):
 
-            print(data[0].shape)
-            skippedsamples = 0
+            for epoch in range(128):
 
-            for batch in range(len(data[0])):
+                batch_loss = 0.0
 
-                for epoch in range(5):
+                for sample in self.data[batch]:
 
-                    print(type(data))
-                    print(f"{data[batch][0].shape} SAMPLES")
+                    #print(f"SAMPLE {sample.shape}")
 
-                    for sample in data[batch]:
+                    try :
+                        inputs, labels = sample, sample
+                        #print("INPUTS ",inputs.shape)
+                        inputs, labels = inputs.to(device), labels.to(device)
 
-                        #print(f"SAMPLE {sample.shape}")
+                        # zero the parameter gradients
+                        optimizer.zero_grad()
 
-                        try :
-                            running_loss = 0.0
-                            inputs, labels = sample, sample
-                            #print("INPUTS ",inputs.shape)
-                            inputs, labels = inputs.to(device), labels.to(device)
+                        # forward + backward + optimize
+                        outputs = model(inputs)
+                        loss = criterion(outputs[0], outputs[1], labels)
+                        loss.backward()
+                        optimizer.step()
 
-                            # zero the parameter gradients
-                            optimizer.zero_grad()
+                        batch_loss += loss.item()
 
-                            # forward + backward + optimize
-                            outputs = self.model(inputs)
-                            loss = criterion(outputs, labels)["loss"]
-                            loss.backward()
-                            optimizer.step()
+                    except :
+                        skippedsamples += 1
+                        print(f"Samples Skipped | {skippedsamples}")
+                        batch_loss += loss.item()
 
-                            running_loss += loss.item()
-
-                        except :
-                            skippedsamples += 1
-                            print(f"Samples Skipped | {skippedsamples}")
-                            running_loss += loss.item()
-
-                    print('Batch Loss: {}'.format(running_loss))
-                torch.save(self.model.enc.state_dict(), f"./src/Saves/Hikari_M01_VE512_B{batch}.pt")
-                torch.save(self.model.dec.state_dict(), f"./src/Saves/Hikari_M01_VD512_B{batch}.pt")
-                torch.save(self.model.bnk.state_dict(), f"./src/Saves/Hikari_M01_VB512_B{batch}.pt")
+                print('E: {} BL: {}'.format(epoch, batch_loss / 16))
+            torch.save(model.enc.state_dict(), f"./Saves/Encoder/Hikari_M01_VE512_B{batch}.pt")
+            torch.save(model.dec.state_dict(), f"./Saves/Decoder/Hikari_M01_VD512_B{batch}.pt")
+            torch.save(model.bnk.state_dict(), f"./Saves/Bottleneck/Hikari_M01_VB512_B{batch}.pt")
 
         print('Finished Training')
