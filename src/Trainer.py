@@ -45,7 +45,7 @@ class Trainer :
         skippedsamples = 0
         for batch in range(len(self.data)):
 
-            for epoch in range(128):
+            for epoch in range(64):
 
                 batch_loss = 0.0
 

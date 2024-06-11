@@ -14,6 +14,7 @@ class VectorQuantizer(nn.Module):
         # self.reset_parameters()
 
     def forward(self, latents):
+        print(latents.shape)
         # Compute L2 distances between latents and embedding weights
         dist = torch.linalg.vector_norm(latents.movedim(1, -1).unsqueeze(-2) - self.embedding.weight, dim=-1)
         encoding_inds = torch.argmin(dist, dim=-1)        # Get the number of the nearest codebook vector
