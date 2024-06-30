@@ -74,7 +74,7 @@ class Trainer :
                         print(f"Samples Skipped | {skippedsamples}")
                         batch_loss += loss.item()
 
-                print('E: {} BL: {}'.format(epoch, batch_loss / 16))
+                print('E: {} BL: {}'.format(epoch, batch_loss / 8))
             torch.save(model.enc.state_dict(), f"./Saves/Encoder/Hikari_M01_VE512_B{batch}.pt")
             torch.save(model.dec.state_dict(), f"./Saves/Decoder/Hikari_M01_VD512_B{batch}.pt")
             torch.save(model.bnk.state_dict(), f"./Saves/Bottleneck/Hikari_M01_VB512_B{batch}.pt")

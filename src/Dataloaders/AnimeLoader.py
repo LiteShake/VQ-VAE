@@ -53,7 +53,7 @@ class AnimeLoader:
             count += 1
             samplecount += 1
 
-            if(count == 16):
+            if(count == 8):
                 batches.append(batch)
                 batchcount += 1
                 count = 0

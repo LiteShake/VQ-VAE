@@ -7,8 +7,8 @@ class VAEBottleNeck(nn.Module):
     def __init__(self, device) -> None:
         super().__init__()
 
-        self.mean = nn.Linear(32, 32)#.to(device)
-        self.logvar = nn.Linear(32, 32)#.to(device)
+        self.mean = nn.Linear(4, 4)#.to(device)
+        self.logvar = nn.Linear(4, 4)#.to(device)
         self.device = device
 
     def forward(self, x):

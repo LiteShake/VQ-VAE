@@ -13,12 +13,13 @@ class VQVAE(nn.Module):
         super().__init__()
 
         self.enc = AEEncoder().to(device)
-        self.bnk = VectorQuantizer(1024, 32, .25).to(device)
+        self.bnk = VectorQuantizer(1024, 4, .25).to(device)
         self.dec = AEDecoder().to(device)
 
     def forward(self, x):
 
         out = self.enc(x)
+        #print(out.shape)
         loss, quantized = self.bnk(out)
         # print(out.shape)
         out = self.dec(quantized)
